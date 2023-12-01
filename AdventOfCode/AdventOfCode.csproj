@@ -6,7 +6,4 @@
     <Nullable>enable</Nullable>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
-  <ItemGroup>
-    <None Include=".\Inputs\*" CopyToOutputDirectory="Always" />
-  </ItemGroup>
 </Project>

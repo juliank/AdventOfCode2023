@@ -4,8 +4,10 @@ public static class FileHelper
 {
     public static string GetInputFilePath(string fileName)
     {
-        var basePath = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
-        var path = $"{basePath}\\Inputs\\{fileName}";
+        var assemblyLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly()!.Location);
+        var solutionDirectory = $"{assemblyLocation}\\..\\..\\..\\..\\";
+        var solutionName = new DirectoryInfo(solutionDirectory).Name;
+        var path = $"{solutionDirectory}..\\{solutionName}Input\\{fileName}";
 
         if (!File.Exists(path))
         {
