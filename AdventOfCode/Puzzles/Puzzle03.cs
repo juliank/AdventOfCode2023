@@ -96,7 +96,7 @@ public class Puzzle03 : Puzzle<List<Puzzle03.Element>, long>
 
         bool AddToElementsIfNumber(int position, int digits)
         {
-            if (TryParse(inputItem[position..].Take(digits), out var number))
+            if (inputItem[position..].Take(digits).TryParse(out int number))
             {
                 var element = new Element(number, new Point(position, _yCounter), digits);
                 elements.Add(element);
