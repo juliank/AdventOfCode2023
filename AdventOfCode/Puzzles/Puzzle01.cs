@@ -16,7 +16,7 @@ public class Puzzle01 : Puzzle<int, int>
 
     public override int SolvePart2()
     {
-        return InputEntries.Sum(); // 53312
+        return InputEntries.Sum();
     }
 
     protected internal override IEnumerable<int> ParseInput(string inputItem)

@@ -13,7 +13,7 @@ public class Puzzle02 : Puzzle<Puzzle02.Game, long>
         // Max 12 red cubes, 13 green cubes, and 14 blue cubes
         var possibleGames = InputEntries.Where(game => game.IsPossible(12, 13, 14));
 
-        return possibleGames.Sum(g => g.Id); // 2207
+        return possibleGames.Sum(g => g.Id);
     }
 
     public override long SolvePart2()
