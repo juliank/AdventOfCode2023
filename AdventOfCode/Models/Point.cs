@@ -1,5 +1,8 @@
 namespace AdventOfCode.Models;
 
+/// <summary>
+/// A point accompanied with a value of a specific type.
+/// </summary>
 public record Point<T> : Point where T : notnull
 {
     public Point(int X, int Y, int Z = 0) : base(X, Y, Z)
@@ -15,18 +18,18 @@ public record Point<T> : Point where T : notnull
     {
         if (Value == null) return base.ToString();
 
-        return $"{X},{Y} ({Value})";
+        return $"{X},{Y},{Z} ({Value})";
     }
 }
 
 /// <summary>
-/// A two or three dimentional point, with X and Y (and Z) coordinates.
+/// A two or three dimensional point, with X and Y (and Z) coordinates.
 ///
 /// - X is east (+1) and west (-1).
 /// - Y is south (+1) and north (-1)
 /// - Z is up (+1) and down (-1)
 ///
-/// Y is perhaps the oposite of what one might expect, but this is due to most
+/// Y is perhaps the opposite of what one might expect, but this is due to most
 /// of the puzzles in AoC _increases_ the Y value when moving one row _down_
 /// in a grid/matrix.
 ///
@@ -50,6 +53,11 @@ public record Point(int X, int Y, int Z = 0)
     }
 
     public bool HasN() { return MinY == null || Y - 1 >= MinY; }
+
+    /// <summary>
+    /// Get the point north (Y-1) of the current
+    /// </summary>
+    /// <remarks>If the point is outside the boundary as defined by the point, null is returned.</remarks>
     public Point? GetN()
     {
         if (!HasN()) return null;
@@ -57,6 +65,11 @@ public record Point(int X, int Y, int Z = 0)
     }
 
     public bool HasS() { return MaxY == null || Y + 1 <= MaxY; }
+
+    /// <summary>
+    /// Get the point south (Y+1) of the current
+    /// </summary>
+    /// <remarks>If the point is outside the boundary as defined by the point, null is returned.</remarks>
     public Point? GetS()
     {
         if (!HasS()) return null;
@@ -64,6 +77,11 @@ public record Point(int X, int Y, int Z = 0)
     }
 
     public bool HasE() { return MaxX == null || X + 1 <= MaxX; }
+
+    /// <summary>
+    /// Get the point east (X+1) of the current
+    /// </summary>
+    /// <remarks>If the point is outside the boundary as defined by the point, null is returned.</remarks>
     public Point? GetE()
     {
         if (!HasE()) return null;
@@ -71,6 +89,11 @@ public record Point(int X, int Y, int Z = 0)
     }
 
     public bool HasW() { return MinX == null || X - 1 >= MinX; }
+
+    /// <summary>
+    /// Get the point west (X-1) of the current
+    /// </summary>
+    /// <remarks>If the point is outside the boundary as defined by the point, null is returned.</remarks>
     public Point? GetW()
     {
         if (!HasW()) return null;
@@ -78,6 +101,11 @@ public record Point(int X, int Y, int Z = 0)
     }
 
     public bool HasUp() { return MaxZ == null || Z + 1 <= MaxZ; }
+
+    /// <summary>
+    /// Get the point above (Z+1) the current
+    /// </summary>
+    /// <remarks>If the point is outside the boundary as defined by the point, null is returned.</remarks>
     public Point? GetUp()
     {
         if (!HasUp()) return null;
@@ -85,6 +113,11 @@ public record Point(int X, int Y, int Z = 0)
     }
 
     public bool HasDown() { return MinZ == null || Z - 1 >= MinZ; }
+
+    /// <summary>
+    /// Get the point below (Z-1) the current
+    /// </summary>
+    /// <remarks>If the point is outside the boundary as defined by the point, null is returned.</remarks>
     public Point? GetDown()
     {
         if (!HasDown()) return null;
