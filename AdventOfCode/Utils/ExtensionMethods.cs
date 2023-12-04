@@ -2,7 +2,19 @@ namespace AdventOfCode.Utils;
 
 public static class ExtensionMethods
 {
-    public static bool TryParse(this IEnumerable<char> chars, out int result)
+    public static int ParseInt(this IEnumerable<char> chars)
+    {
+        var s = new string(chars.ToArray());
+        return int.Parse(s);
+    }
+
+    public static long ParseLong(this IEnumerable<char> chars)
+    {
+        var s = new string(chars.ToArray());
+        return long.Parse(s);
+    }
+
+    public static bool TryParseInt(this IEnumerable<char> chars, out int result)
     {
         var s = new string(chars.ToArray());
         if (int.TryParse(s, out var i))
@@ -15,7 +27,7 @@ public static class ExtensionMethods
         return false;
     }
 
-    public static bool TryParse(this IEnumerable<char> chars, out long result)
+    public static bool TryParseLong(this IEnumerable<char> chars, out long result)
     {
         var s = new string(chars.ToArray());
         if (long.TryParse(s, out var l))
