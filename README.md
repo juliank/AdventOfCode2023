@@ -22,3 +22,7 @@ To avoid having to specify the project path every time, it is easiest running th
   `dotnet run 3`
 - Run all tests:  
   `dotnet test ..`
+
+# TODOs
+
+- Puzzle 5: Solution to part 2 took almost an hour (running i release mode)... Look into improving this?
