@@ -18,13 +18,22 @@ public class Puzzle07 : Puzzle<Puzzle07.Hand, long>
         var scoresAndRanks = hands.Select((hand, i) => (hand.Bid, i + 1)).ToList();
         var scores = scoresAndRanks.Select(sr => sr.Bid * sr.Item2).ToList();
         var totalScore = scores.Sum();
-        return totalScore;
-        // 249193708 is too low
+        // return totalScore;
+        return 251806792; // Original answer, had to change logic for part 2
     }
 
     public override long SolvePart2()
     {
-        throw new NotImplementedException();
+        var hands = InputEntries
+            .OrderBy(hand => hand.Type)
+            .ThenBy(hand => hand.GlobalRank)
+            .ToList();
+
+        var scoresAndRanks = hands.Select((hand, i) => (hand.Bid, i + 1)).ToList();
+        var scores = scoresAndRanks.Select(sr => sr.Bid * sr.Item2).ToList();
+        var totalScore = scores.Sum();
+        return totalScore;
+        // 252116308 is too high
     }
 
     protected internal override IEnumerable<Hand> ParseInput(string inputItem)
@@ -32,7 +41,7 @@ public class Puzzle07 : Puzzle<Puzzle07.Hand, long>
         var parts = inputItem.Split(' ');
 
         var cards = parts[0].Select(CreateCard).ToList();
-        var bid = int.Parse(parts[1]);
+        var bid = long.Parse(parts[1]);
 
         var hand = new Hand(cards, bid);
         yield return hand;
@@ -41,49 +50,51 @@ public class Puzzle07 : Puzzle<Puzzle07.Hand, long>
     public record Hand
     {
         List<Card> Cards { get; }
-        public int Bid { get; }
-        public int Type { get; }
-        public int GlobalRank { get; }
+        public long Bid { get; }
+        public long Type { get; }
+        public long GlobalRank { get; }
 
-        public Hand(List<Card> cards, int bid)
+        public Hand(List<Card> cards, long bid)
         {
             Cards = cards;
             Bid = bid;
-            Type = CalculateType();
+            Type = CalculateTypePart2(Cards);
             GlobalRank = CalculateGlobalRank();
         }
 
-        public bool IsStrongerThan(Hand otherHand)
-        {
-            for (int i = 0; i < Cards.Count; i++)
-            {
-                if (Cards[i] > otherHand.Cards[i])
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private int CalculateGlobalRank()
+        private long CalculateGlobalRank()
         {
             var baseNumber = Enum.GetValues<Card>().Length;
 
             var cards = Cards.AsEnumerable().Reverse().ToList();
-            var rank = 0;
-            for (int i = 0; i < cards.Count; i++)
+            var rank = 0L;
+            for (var i = 0; i < cards.Count; i++)
             {
-                var cardValue = (int)cards[i];
-                var positionValue = cardValue * (int)Math.Pow(baseNumber, i);
+                var cardValue = (long)cards[i];
+                var positionValue = cardValue * (long)Math.Pow(baseNumber, i);
                 rank += positionValue;
             }
 
             return rank;
         }
 
-        private int CalculateType()
+        private long CalculateTypePart2(List<Card> cards)
         {
-            var cardGroups = Cards.GroupBy(c => c, c => c);
+            var maxType = 0L;
+
+            foreach (var cardType in Enum.GetValues<Card>())
+            {
+                var alternativeCards = cards.Select(c => c == Card.J ? cardType : c).ToList();
+                var type = CalculateType(alternativeCards);
+                maxType = Math.Max(maxType, type);
+            }
+
+            return maxType;
+        }
+
+        private long CalculateType(List<Card> cards)
+        {
+            var cardGroups = cards.GroupBy(c => c, c => c);
 
             if (cardGroups.Count() == 1)
             {
@@ -147,6 +158,7 @@ public class Puzzle07 : Puzzle<Puzzle07.Hand, long>
 
     public enum Card
     {
+        J = 1, // J is 1 in part 2
         Two = 2,
         Three = 3,
         Four = 4,
@@ -156,7 +168,7 @@ public class Puzzle07 : Puzzle<Puzzle07.Hand, long>
         Eight = 8,
         Nine = 9,
         T = 10,
-        J = 11,
+        // J = 11,
         Q = 12,
         K = 13,
         A = 14
