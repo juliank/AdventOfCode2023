@@ -17,7 +17,7 @@ public class Puzzle07Tests
     }
 
     // [Fact]
-    public void SolvePart2()
+    internal void SolvePart2()
     {
         var result = puzzle.SolvePart2();
         result.Should().Be(0);
