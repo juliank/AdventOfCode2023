@@ -20,6 +20,11 @@ public record Point<T> : Point where T : notnull
 
         return $"{X},{Y},{Z} ({Value})";
     }
+
+    public Point ToPoint()
+    {
+        return this with { Value = default };
+    }
 }
 
 /// <summary>
