@@ -18,6 +18,14 @@ public class Puzzle12 : Puzzle<string, long>
         throw new NotImplementedException();
     }
 
+    public static (string Springs, int[] DamagedSprings) ParseSpringRecord(string str)
+    {
+        var parts = str.Split(' ');
+        var springs = parts[0];
+        var damagedSprings = parts[1].Split(',').Select(c => int.Parse(c.ToString())).ToArray();
+        return (springs, damagedSprings);
+    }
+
     protected internal override IEnumerable<string> ParseInput(string inputItem)
     {
         yield return inputItem;
