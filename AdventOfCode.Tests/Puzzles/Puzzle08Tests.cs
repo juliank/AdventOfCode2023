@@ -16,10 +16,10 @@ public class Puzzle08Tests
         result.Should().Be(15871);
     }
 
-    // [Fact]
-    internal void SolvePart2()
+    [Fact]
+    public void SolvePart2()
     {
         var result = puzzle.SolvePart2();
-        result.Should().Be(0);
+        result.Should().Be(11283670395017);
     }
 }

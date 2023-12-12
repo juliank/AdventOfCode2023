@@ -27,39 +27,25 @@ public class Puzzle08 : Puzzle<string, long>
 
     public override long SolvePart2()
     {
-        if (DateTime.Now > DateTime.MinValue)
-        {
-            // The current brute force solution doesn't work for part two.
-            // After two days in, we're still not getting any answer...
-            // The solution is probably mathematical (least common denominator?).
-            throw new NotImplementedException();
-        }
-
         (var directions, var nodes) = ParseInput();
 
-        var nextNodes = nodes.Keys.Where(k => k.EndsWith('A')).ToList();
-        char direction;
-        var steps = 0L;
-
-        var sw = Stopwatch.StartNew();
-        while (nextNodes.Any(n => n[2] != 'Z'))
+        var stepsToEnd = new List<long>();
+        var startNodes = nodes.Keys.Where(n => n.EndsWith('A'));
+        foreach (var startNode in startNodes)
         {
-            // Must cast to int for array index (this is safe because we've done % directions.Length)
-            var directionIndex = (int)(steps % directions.Length);
-            direction = directions[directionIndex];
-            nextNodes = direction == 'L'
-                ? nextNodes.Select(n => nodes[n].L).ToList()
-                : nextNodes.Select(n => nodes[n].R).ToList();
-            steps++;
-
-            if (steps % 10_000_000 == 0)
+            var nextNode = startNode;
+            char direction;
+            var steps = 0L;
+            while (!nextNode.EndsWith('Z'))
             {
-                // Console.WriteLine($"{DateTime.Now.TimeOfDay}: Processed {steps:#,0} steps in {(sw.ElapsedMilliseconds / 1000):#,0} seconds");
-                Console.WriteLine($"{DateTime.Now.TimeOfDay}: Processed {steps:#,0} steps in {sw.Elapsed}");
+                direction = directions[(int)(steps % directions.Length)];
+                nextNode = direction == 'L' ? nodes[nextNode].L : nodes[nextNode].R;
+                steps++;
             }
+            stepsToEnd.Add(steps);
         }
-
-        return steps;
+        var lcm = MathX.LeastCommonMultiple(stepsToEnd.ToArray());
+        return lcm;
     }
 
     private (string Directions, Dictionary<string, (string L, string R)> Nodes) ParseInput()
