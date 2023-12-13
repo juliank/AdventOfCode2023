@@ -33,4 +33,19 @@ public class Puzzle12Tests
         result.Springs.Should().Be(springs);
         result.DamagedSprings.Should().BeEquivalentTo(damagedSprings);
     }
+
+    [Theory]
+    [InlineData(" 0", 0)]
+    [InlineData("# 1", 1)]
+    [InlineData("? 1", 1)]
+    [InlineData("??? 1", 3)]
+    [InlineData("??? 2", 2)]
+    // [InlineData(". 0", 0)]
+    // [InlineData("", 0)]
+    // [InlineData("???.### 1,1,3", 1)]
+    public void TestPossibleArrangements(string springRecord, int possibleArrangements)
+    {
+        var result = Puzzle12.PossibleArrangements(springRecord);
+        result.Should().Be(possibleArrangements);
+    }
 }
