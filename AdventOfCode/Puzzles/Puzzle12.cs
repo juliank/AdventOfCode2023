@@ -39,10 +39,23 @@ public class Puzzle12 : Puzzle<string, long>
         {
             return 0;
         }
+        if (damagedSprings[0] > springs.Length)
+        {
+            return 0;
+        }
 
         var arrangements = 1L;
 
-        var remainingSprings = springs[damagedSprings[0]..];
+        var springsToSkip = damagedSprings[0];
+        if (damagedSprings.Length > 1)
+        {
+            springsToSkip++;
+        }
+        if (springsToSkip > springs.Length)
+        {
+            return 0;
+        }
+        var remainingSprings = springs[springsToSkip..];
         var remainingDamagedSprings = damagedSprings[1..];
         var possibleRemaining = PossibleArrangements(remainingSprings, remainingDamagedSprings);
         arrangements += possibleRemaining;

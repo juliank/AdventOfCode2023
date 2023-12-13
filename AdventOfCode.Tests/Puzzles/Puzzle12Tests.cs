@@ -40,6 +40,7 @@ public class Puzzle12Tests
     [InlineData("? 1", 1)]
     [InlineData("??? 1", 3)]
     [InlineData("??? 2", 2)]
+    [InlineData("??? 1,1", 1)]
     // [InlineData(". 0", 0)]
     // [InlineData("", 0)]
     // [InlineData("???.### 1,1,3", 1)]
