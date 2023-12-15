@@ -28,3 +28,7 @@ To avoid having to specify the project path every time, it is easiest running th
 - Look into making it possible to use separate parsing logic for part 1 and part 2.
 - Puzzle 5: Solution to part 2 took almost an hour (running i release mode)... Look into improving this?
 - Puzzle 7: Solution to part 2 is not correct. It works on the puzzle sample, but yields the wrong result on the proper input.
+- Puzzle 10: Has made no attempt on part 2 yet.
+- Puzzle 12: Work in progress.
+- Puzzle 13: Solution to part 2 is not correct. It works on the puzzle sample, but yields the wrong result on the proper input.
+- Puzzle 14: Solution to part 2 is not correct. It did work on the sample input, but after attempts on optimizing/fixing the cycle calculation, this is also broken...

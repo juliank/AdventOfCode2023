@@ -1,6 +1,3 @@
-
-using System.Net.Security;
-
 namespace AdventOfCode.Puzzles;
 
 public class Puzzle14 : Puzzle<string, long>
@@ -46,32 +43,53 @@ public class Puzzle14 : Puzzle<string, long>
         var lastCycle = false;
         for (var i = 1; i <= cycleCount; i++)
         {
-            (platform, var foundInCache) = TiltCycle(platform);
+            (platform, var foundInCache) = TiltCycle(platform, i);
+            var cacheKey = platform.SelectMany(line => line).CreateString();
+            if (i <= 2)
+            {
+                // Console.WriteLine($"After cycle {i}:");
+                // OutputPlatform(platform);
+                // Console.WriteLine();
+            }
             if (foundInCache && !lastCycle)
             {
-                Console.WriteLine();
-                Console.WriteLine($"Got the first cache hit at i = {i}");
-                var cycleLength = i - 1;
-                var cyclesToSkip = (cycleCount / cycleLength) - 2;
+                // Console.WriteLine($"Found in cache at {i}:");
+                // OutputPlatform(platform);
+                // Console.WriteLine();
+
+                // Console.WriteLine();
+                // Console.WriteLine($"Got the first cache hit at i = {i} - key: {cacheKey}");
+                // var cacheKey = platform.SelectMany(line => line).CreateString();
+                var cacheHit = CycleMap[cacheKey];
+                var cycleLength = i - cacheHit - 1;
+                var cyclesToSkip = (cycleCount / cycleLength) - 1;
                 i += cyclesToSkip * cycleLength;
                 lastCycle = true;
-                Console.WriteLine($"Cycle length is {cycleLength}");
-                Console.WriteLine($"Skipping {cyclesToSkip} cycles, continuing at i = {i}");
-                Console.WriteLine();
+                // Console.WriteLine($"Cycle length is {cycleLength} (starting at i = {cacheHit})");
+                // Console.WriteLine($"Skipping {cyclesToSkip} cycles, continuing at i = {i}");
+                // Console.WriteLine();
 
             }
-            if (i % 1_000_000 == 0)// || i <= 3)
+            if (i % 1_000_000 == 0 || i <= 20 || i >= cycleCount - 20)
             {
                 var currentLoad = CalculateLoad(platform);
-                Console.WriteLine($"{DateTime.Now}: Tilted {i:#,0} cycles in {sw.Elapsed} - current load is {currentLoad}");
+                // Console.WriteLine($"{DateTime.Now}: Tilted {i:#,0} cycles in {sw.Elapsed} - current load is {currentLoad} - cache key: [{cacheKey}]");
                 // Console.WriteLine($"After {i:#,0} cycles ({sw.Elapsed}) - current load: {currentLoad}");
                 // OutputPlatform(platform);
                 // Console.WriteLine();
             }
         }
 
+        // Console.WriteLine();
+        // Console.WriteLine("Cycle cache:");
+        // foreach (var cachedKey in CycleMap)
+        // {
+        //     Console.WriteLine($"{cachedKey.Value}: {cachedKey.Key}");
+        // }
         var totalLoad = CalculateLoad(platform);
         return totalLoad;
+        // 89805 is too low (first attempt with optimized solution)
+        // 89824 is too low (after trying to take cache cycle length into account)
     }
 
     private static void OutputPlatform(char[][] platform)
@@ -83,6 +101,7 @@ public class Puzzle14 : Puzzle<string, long>
     }
 
     private static readonly Dictionary<string, char[][]> TiltCache = [];
+    private static readonly Dictionary<string, int> CycleMap = [];
 
     private static char[][]? GetFromCache(string cacheKey)
     {
@@ -106,7 +125,7 @@ public class Puzzle14 : Puzzle<string, long>
         return copy.ToArray();
     }
 
-    private static (char[][] TiltCycle, bool FoundInCache) TiltCycle(char[][] platform)
+    private static (char[][] TiltCycle, bool FoundInCache) TiltCycle(char[][] platform, int cycle)
     {
         var cacheKey = platform.SelectMany(line => line).CreateString();
         // var cached = TiltCache.TryGetValue(cacheKey, out var cachedPlatform);
@@ -141,6 +160,7 @@ public class Puzzle14 : Puzzle<string, long>
         //     TiltCache.Add(cacheKey, platform);
         // }
         TiltCache.Add(cacheKey, platform);
+        CycleMap.Add(cacheKey, cycle);
 
         return (platform, false);
     }
