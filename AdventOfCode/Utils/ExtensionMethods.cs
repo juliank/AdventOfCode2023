@@ -2,6 +2,12 @@ namespace AdventOfCode.Utils;
 
 public static class ExtensionMethods
 {
+    public static string CreateString(this IEnumerable<char> chars)
+    {
+        var s = new string(chars.ToArray());
+        return s;
+    }
+
     public static int ParseInt(this IEnumerable<char> chars)
     {
         var s = new string(chars.ToArray());
