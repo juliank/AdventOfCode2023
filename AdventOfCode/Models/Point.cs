@@ -57,6 +57,34 @@ public record Point(int X, int Y, int Z = 0)
         return $"{X},{Y},{Z}";
     }
 
+    public bool Has(Direction direction)
+    {
+        return direction switch
+        {
+            Direction.N => HasN(),
+            Direction.S => HasS(),
+            Direction.E => HasE(),
+            Direction.W => HasW(),
+            Direction.U => HasUp(),
+            Direction.D => HasDown(),
+            _ => throw new ArgumentException($"Unknown direction {direction}")
+        };
+    }
+
+    public Point? Get(Direction direction)
+    {
+        return direction switch
+        {
+            Direction.N => GetN(),
+            Direction.S => GetS(),
+            Direction.E => GetE(),
+            Direction.W => GetW(),
+            Direction.U => GetUp(),
+            Direction.D => GetDown(),
+            _ => throw new ArgumentException($"Unknown direction {direction}")
+        };
+    }
+
     public bool HasN() { return MinY == null || Y - 1 >= MinY; }
 
     /// <summary>
@@ -145,4 +173,32 @@ public record Point(int X, int Y, int Z = 0)
     {
         return Math.Abs(X - point.X) + Math.Abs(Y - point.Y) + Math.Abs(Z - point.Z);
     }
+}
+
+public enum Direction
+{
+    /// <summary>
+    /// North => Y - 1
+    /// </summary>
+    N,
+    /// <summary>
+    /// South => Y + 1
+    /// </summary>
+    S,
+    /// <summary>
+    /// East => X + 1
+    /// </summary>
+    E,
+    /// <summary>
+    /// West => X - 1
+    /// </summary>
+    W,
+    /// <summary>
+    /// Up => Z + 1
+    /// </summary>
+    U,
+    /// <summary>
+    /// Down => Z - 1
+    /// </summary>
+    D
 }

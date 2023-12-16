@@ -25,7 +25,14 @@ To avoid having to specify the project path every time, it is easiest running th
 
 # TODOs
 
+## General
+
 - Look into making it possible to use separate parsing logic for part 1 and part 2.
+- Consider making a type (enum?) for `Direction` (currently used in both puzzle 10 and 16).
+  - Extend `Point` with methods to get the next point in the given `Direction`?
+
+## Puzzles
+
 - Puzzle 5: Solution to part 2 took almost an hour (running i release mode)... Look into improving this?
 - Puzzle 7: Solution to part 2 is not correct. It works on the puzzle sample, but yields the wrong result on the proper input.
 - Puzzle 10: Has made no attempt on part 2 yet.
