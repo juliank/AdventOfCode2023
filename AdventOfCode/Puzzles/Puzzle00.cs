@@ -1,12 +1,12 @@
 namespace AdventOfCode.Puzzles;
 
-public class Puzzle00 : Puzzle<long, long>
+public class Puzzle18 : Puzzle<string, long>
 {
-    private const int PuzzleId = 00;
+    private const int PuzzleId = 18;
 
-    public Puzzle00() : base(PuzzleId) { }
+    public Puzzle18() : base(PuzzleId) { }
 
-    public Puzzle00(params long[] inputEntries) : base(PuzzleId, inputEntries) { }
+    public Puzzle18(params string[] inputEntries) : base(PuzzleId, inputEntries) { }
 
     public override long SolvePart1()
     {
@@ -18,8 +18,8 @@ public class Puzzle00 : Puzzle<long, long>
         throw new NotImplementedException();
     }
 
-    protected internal override IEnumerable<long> ParseInput(string inputItem)
+    protected internal override IEnumerable<string> ParseInput(string inputItem)
     {
-        yield return 0;
+        yield return inputItem;
     }
 }
