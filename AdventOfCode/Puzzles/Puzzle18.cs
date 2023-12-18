@@ -11,7 +11,59 @@ public class Puzzle18 : Puzzle<string, long>
     public override long SolvePart1()
     {
         var digPlan = CreateDigPlan();
-        return -1;
+
+        var minX = digPlan.Select(p => p.X).Min();
+        var maxX = digPlan.Select(p => p.X).Max();
+        var minY = digPlan.Select(p => p.Y).Min();
+        var maxY = digPlan.Select(p => p.Y).Max();
+        var edges = digPlan.Select(p => p.ToPoint()).ToHashSet();
+
+        var trenchCount = 0;
+        // Run ray tracing
+        for (var y = minY; y <= maxY; y++)
+        {
+            var line = string.Empty;
+
+            var isInTrench = false;
+            for (var x = minX; x <= maxX; x++)
+            {
+                var exitPoint = false;
+                if (edges.Contains(new Point<string>(x, y)))
+                {
+                    if (!isInTrench)
+                    {
+                        // We're entering the trench
+                        isInTrench = true;
+                    }
+                }
+                else
+                {
+                    if (isInTrench)
+                    {
+                        // Remember to also increase the count at the point
+                        // where we exit the trench.
+                        // trenchCount++;
+                        exitPoint = true;
+                        isInTrench = false;
+                    }
+                }
+
+                if (isInTrench || exitPoint)
+                {
+                    line += "#";
+                    trenchCount++;
+                }
+                else
+                {
+                    line += ".";
+                }
+            }
+
+            Console.WriteLine(line);
+        }
+
+        return trenchCount;
+        // 67137 is too high
     }
 
     public override long SolvePart2()
