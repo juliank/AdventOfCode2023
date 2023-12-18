@@ -11,58 +11,31 @@ public class Puzzle18 : Puzzle<string, long>
     public override long SolvePart1()
     {
         var digPlan = CreateDigPlan();
+        // digPlan.Add(digPlan.First());
 
-        var minX = digPlan.Select(p => p.X).Min();
-        var maxX = digPlan.Select(p => p.X).Max();
-        var minY = digPlan.Select(p => p.Y).Min();
-        var maxY = digPlan.Select(p => p.Y).Max();
-        var edges = digPlan.Select(p => p.ToPoint()).ToHashSet();
+        // Let 'vertices' be an array of N pairs (x,y), indexed from 0
+        // Let 'area' = 0.0
+        // for i = 0 to N-1, do
+        // Let j = (i+1) mod N
+        // Let area = area + vertices[i].x * vertices[j].y
+        // Let area = area - vertices[i].y * vertices[j].x
+        // end for
+        // Return 'area'
+        var area = 0;
 
-        var trenchCount = 0;
-        // Run ray tracing
-        for (var y = minY; y <= maxY; y++)
+        var vertices = digPlan;
+        var n = vertices.Count;
+        for (var i = 0; i < n - 1; i++)
         {
-            var line = string.Empty;
-
-            var isInTrench = false;
-            for (var x = minX; x <= maxX; x++)
-            {
-                var exitPoint = false;
-                if (edges.Contains(new Point<string>(x, y)))
-                {
-                    if (!isInTrench)
-                    {
-                        // We're entering the trench
-                        isInTrench = true;
-                    }
-                }
-                else
-                {
-                    if (isInTrench)
-                    {
-                        // Remember to also increase the count at the point
-                        // where we exit the trench.
-                        // trenchCount++;
-                        exitPoint = true;
-                        isInTrench = false;
-                    }
-                }
-
-                if (isInTrench || exitPoint)
-                {
-                    line += "#";
-                    trenchCount++;
-                }
-                else
-                {
-                    line += ".";
-                }
-            }
-
-            Console.WriteLine(line);
+            var j = (i + 1) % (n - 1);
+            area += vertices[i].X * vertices[j].Y;
+            area -= vertices[i].Y * vertices[j].X;
         }
+        area /= 2; // Too low
 
-        return trenchCount;
+        area += digPlan.Count; // Too high...
+
+        return area;
         // 67137 is too high
     }
 
