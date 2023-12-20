@@ -81,12 +81,38 @@ public class Puzzle20 : Puzzle<string, long>
     {
         public required string Name { get; init; }
         public required ModuleType Type { get; init; }
+        public int State { get; private set; } = 0;
         public List<(Module Module, int PreviousPulse)> Inputs { get; } = [];
         public List<Module> Ouputs { get; } = [];
         public required string[] OutputNames { get; init; } // Only temporary, for initialization
+
+        public void ReceivePulse(Module sender, int pulse)
+        {
+            if (Type == ModuleType.Broadcaster)
+            {
+                // Send the same pulse to all destination modules
+                State = pulse;
+            }
+            else if (Type == ModuleType.FlipFlop)
+            {
+                // If input is a low pulse...
+                if (pulse == 0)
+                {
+                    // Flip the state and send the new state
+                    State = State == 0 ? 1 : 0;
+                }
+            }
+            else if (Type == ModuleType.Conjunction)
+            {
+                var inputState = Inputs.Single(i => i.Module.Name == sender.Name);
+                inputState.PreviousPulse = pulse;
+                // If all previous inputs are high, send a low pulse - otherwise a high pulse
+                State = Inputs.All(i => i.PreviousPulse == 1) ? 0 : 1;
+            }
+            // TODO: Should we count the number of received (high/low) pulses?
+            //       Perhaps also a method for _sending_ pulses (and counting high/low pulses sent)?
+        }
     }
 
-    public enum ModuleType { FlipFlop, Conjunction, Broadcaster, Button,
-        Output
-    }
+    public enum ModuleType { FlipFlop, Conjunction, Broadcaster, Button, Output }
 }
