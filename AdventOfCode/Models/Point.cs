@@ -45,6 +45,8 @@ public record Point<T> : Point where T : notnull
 /// </summary>
 public record Point(int X, int Y, int Z = 0)
 {
+    public static readonly Direction[] Directions2D = [Direction.N, Direction.S, Direction.E, Direction.W];
+    public static readonly Direction[] Directions3D = [Direction.N, Direction.S, Direction.E, Direction.W, Direction.U, Direction.D];
     public int? MaxX { get; init; } = default!;
     public int? MaxY { get; init; } = default!;
     public int? MinX { get; init; } = default!;
@@ -55,6 +57,11 @@ public record Point(int X, int Y, int Z = 0)
     public override string ToString()
     {
         return $"{X},{Y},{Z}";
+    }
+
+    public Point ToHashKey()
+    {
+        return new Point(X, Y, Z);
     }
 
     public bool Has(Direction direction)
